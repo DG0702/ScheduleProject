@@ -60,7 +60,7 @@ public class JdbcMemberRepository implements MemberRepository{
     @Override
     public List<Member> findAll(){
 
-        // 모든 결과 조회
+        // 모든 Member 조회
         String sql = "SELECT * FROM MEMBER";
         List<Member> members = jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Member.class));
         return members;
@@ -102,7 +102,6 @@ public class JdbcMemberRepository implements MemberRepository{
 
         sql += " WHERE id = ?";
         params.add(member.getId());
-
 
         jdbcTemplate.update(sql,params.toArray());
 

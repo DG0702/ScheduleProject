@@ -8,7 +8,7 @@ public interface ScheduleRepository {
 
     Schedule save(Schedule schedule);
 
-    Schedule findById(long id);
+    Schedule findById(Long id);
 
     List<Schedule> findAll();
 
