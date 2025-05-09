@@ -2,7 +2,6 @@ package com.project.scheduleproject.service;
 
 import com.project.scheduleproject.entity.Schedule;
 import com.project.scheduleproject.repository.JdbcScheduleRepository;
-import com.project.scheduleproject.repository.ScheduleRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

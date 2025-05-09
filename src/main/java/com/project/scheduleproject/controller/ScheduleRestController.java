@@ -7,7 +7,11 @@ import com.project.scheduleproject.service.ScheduleService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
@@ -34,16 +38,34 @@ public class ScheduleRestController {
 
     // 일정 조회
     @GetMapping("/schedule/{id}")
-    public ResponseEntity<Schedule> selectSchedule(@PathVariable Long id){
+    public ResponseEntity<ScheduleDTO> selectSchedule(@PathVariable Long id){
         Schedule schedule = scheduleService.selectSchedule(id);
-        return ResponseEntity.ok(schedule);
+
+        ScheduleDTO scheduleDTO = new ScheduleDTO(schedule);
+
+        return ResponseEntity.ok(scheduleDTO);
     }
 
     // 모든 일정 조회
     @GetMapping("/schedule")
-    public ResponseEntity<List<Schedule>> selectAllSchedules(){
+    public ResponseEntity<List<ScheduleDTO>> selectAllSchedules(){
         List<Schedule> schedules = scheduleService.selectAllSchedule();
-        return ResponseEntity.ok(schedules);
+
+//        List<ScheduleDTO> scheduleDTOList = schedules.stream()
+//                .map(schedule -> new ScheduleDTO(schedule))
+//                .map(ScheduleDTO::new)
+//                .collect(Collectors.toList());
+
+
+
+        List<ScheduleDTO> scheduleDTOList = new ArrayList<>();
+
+        for (Schedule schedule : schedules) {
+            ScheduleDTO scheduleDTO = new ScheduleDTO(schedule);
+            scheduleDTOList.add(scheduleDTO);
+        }
+
+        return ResponseEntity.ok(scheduleDTOList);
     }
     
     // 일정 수정

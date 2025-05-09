@@ -65,8 +65,8 @@ public class MemberRestController {
     @DeleteMapping("/member/{id}")
     public ResponseEntity<String> deleteMember(@PathVariable Long id){
 
-        String confirm = memberService.deleteMember(id);
-        return ResponseEntity.ok(confirm);
+        String result = memberService.deleteMember(id);
+        return ResponseEntity.ok(result);
     }
 
 
