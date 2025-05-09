@@ -7,7 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 
-import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
+
+
 
 @Getter
 @Setter
@@ -22,17 +24,13 @@ public class ScheduleDTO {
     private String userName;
     private String title;
     private String contents;
-    private DateTimeFormatter createdDate;
-    private DateTimeFormatter updatedDate;
+    private LocalDateTime createdDate;
+    private LocalDateTime updatedDate;
 
     public Schedule toEntity(){
-        if(createdDate == null){
-            createdDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        }
-        if(updatedDate == null){
-            updatedDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        }
         return new Schedule(scheduleId,memberId,pw,userName,title,contents,createdDate,updatedDate);
     }
+
+
 
 }

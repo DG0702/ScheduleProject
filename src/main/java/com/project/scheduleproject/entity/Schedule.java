@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 
-import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
 
 @Setter
 @Getter
@@ -20,7 +20,7 @@ public class Schedule {
     private String userName;
     private String title;
     private String contents;
-    private DateTimeFormatter createdDate;
-    private DateTimeFormatter updatedDate;
+    private LocalDateTime createdDate;
+    private LocalDateTime updatedDate;
 
 }
