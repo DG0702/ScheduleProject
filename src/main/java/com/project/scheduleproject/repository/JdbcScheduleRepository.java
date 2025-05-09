@@ -3,10 +3,12 @@ package com.project.scheduleproject.repository;
 import com.project.scheduleproject.entity.Schedule;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class JdbcScheduleRepository implements ScheduleRepository {
 
     // 필드
@@ -101,12 +103,12 @@ public class JdbcScheduleRepository implements ScheduleRepository {
     }
 
     @Override
-    public String delete (Schedule schedule){
+    public String delete (Long id){
 
         // DELETE 실행
         String sql = "DELETE FROM schedule WHERE schedule_id = ?";
 
-        int romoveRow = jdbcTemplate.update(sql,schedule.getScheduleId());
+        int romoveRow = jdbcTemplate.update(sql,id);
 
         if(romoveRow == 0){
             return "삭제할 일정이 없습니다";
