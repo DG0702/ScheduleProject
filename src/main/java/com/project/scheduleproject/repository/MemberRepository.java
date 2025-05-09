@@ -10,7 +10,7 @@ public interface MemberRepository {
 
     Member findById(Long id);
 
-    List<Member> findALL();
+    List<Member> findAll();
 
     Member update(Member member);
 

@@ -58,7 +58,7 @@ public class JdbcMemberRepository implements MemberRepository{
     }
 
     @Override
-    public List<Member> findALL(){
+    public List<Member> findAll(){
 
         // 모든 결과 조회
         String sql = "SELECT * FROM MEMBER";

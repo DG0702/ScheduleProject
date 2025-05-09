@@ -2,7 +2,7 @@ package com.project.scheduleproject.controller;
 
 import com.project.scheduleproject.dto.MemberDTO;
 import com.project.scheduleproject.entity.Member;
-import com.project.scheduleproject.repository.JdbcMemberRepository;
+import com.project.scheduleproject.service.MemberService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,11 +13,11 @@ import java.util.List;
 public class MemberRestController {
 
     // 필드
-    private final JdbcMemberRepository jdbcMemberRepository;
+    private final MemberService memberService;
 
     // 생성자
-    public MemberRestController(JdbcMemberRepository jdbcMemberRepository) {
-        this.jdbcMemberRepository = jdbcMemberRepository;
+    public MemberRestController(MemberService memberService) {
+        this.memberService = memberService;
     }
 
 
@@ -27,7 +27,7 @@ public class MemberRestController {
 
          Member newMember = memberDTO.toEntity();
 
-         newMember = jdbcMemberRepository.save(newMember);
+         newMember = memberService.createMember(newMember);
 
          return ResponseEntity.ok(newMember);
     }
@@ -35,7 +35,7 @@ public class MemberRestController {
     // 멤버 조회
     @GetMapping("/member/{id}")
     public ResponseEntity<Member> selectMember(@PathVariable Long id){
-        Member member = jdbcMemberRepository.findById(id);
+        Member member = memberService.selectMember(id);
 
         return ResponseEntity.ok(member);
     }
@@ -43,7 +43,7 @@ public class MemberRestController {
     // 모든 멤버 조회
     @GetMapping("/member")
     public ResponseEntity<List<Member>> selectAllMember(){
-        List<Member> members = jdbcMemberRepository.findALL();
+        List<Member> members = memberService.selectAllMembers();
 
         return ResponseEntity.ok(members);
     }
@@ -55,7 +55,7 @@ public class MemberRestController {
 
         member.setId(id);
 
-        Member updatedMember = jdbcMemberRepository.update(member);
+        Member updatedMember = memberService.updateMember(member);
 
         return ResponseEntity.ok(updatedMember);
     }
@@ -65,7 +65,7 @@ public class MemberRestController {
     @DeleteMapping("/member/{id}")
     public ResponseEntity<String> deleteMember(@PathVariable Long id){
 
-        String confirm = jdbcMemberRepository.delete(id);
+        String confirm = memberService.deleteMember(id);
         return ResponseEntity.ok(confirm);
     }
 
