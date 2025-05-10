@@ -70,14 +70,16 @@ public class ScheduleRestController {
     
     // 일정 수정
     @PatchMapping("/schedule/{id}")
-    public ResponseEntity<Schedule> updateSchedule(@PathVariable Long id, @RequestBody ScheduleDTO scheduleDTO){
+    public ResponseEntity<ScheduleDTO> updateSchedule(@PathVariable Long id, @RequestBody ScheduleDTO scheduleDTO){
         Schedule schedule = scheduleDTO.toEntity();
 
         schedule.setScheduleId(id);
 
         Schedule updatedSchedule = scheduleService.updateSchedule(schedule);
 
-        return ResponseEntity.ok(updatedSchedule);
+        ScheduleDTO scheduleDTo = new ScheduleDTO(updatedSchedule);
+
+        return ResponseEntity.ok(scheduleDTo);
     }
 
     // 일정 삭제

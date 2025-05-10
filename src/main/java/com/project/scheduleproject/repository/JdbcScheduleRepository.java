@@ -24,8 +24,6 @@ public class JdbcScheduleRepository implements ScheduleRepository {
     @Override
     public Schedule save (Schedule schedule){
 
-        LocalDateTime now = LocalDateTime.now();
-
         // INSERT 실행 
         // Now() : mysql에서 현재시간을 자동으로 넣는 함수
         String sql = "INSERT INTO schedule " +
@@ -33,10 +31,6 @@ public class JdbcScheduleRepository implements ScheduleRepository {
                 "VALUES (?,?,?,?,?,Now(),Now())";
 
         jdbcTemplate.update(sql,schedule.getMemberId(), schedule.getPw(),schedule.getUserName(),schedule.getTitle(),schedule.getContents());
-
-        // 시간 설정
-        schedule.setCreatedDate(now);
-        schedule.setUpdatedDate(now);
 
 
         String sqlId = "SELECT LAST_INSERT_ID()";
@@ -76,47 +70,42 @@ public class JdbcScheduleRepository implements ScheduleRepository {
 
     @Override
     public Schedule update (Schedule schedule){
+
+        if(!validPw(schedule)) {
+            throw new IllegalArgumentException("비밀번호가 틀렸습니다");
+        }
+
         List<Object> params = new ArrayList<>();
 
         // UPDATE 실행
         String sql = "UPDATE schedule SET ";
 
-        if(schedule.getMemberId() != null){
-            sql += "member_id = ?, ";
-            params.add(schedule.getMemberId());
-        }
-        if(schedule.getPw() != null){
-            sql += "pw = ?, ";
-            params.add(schedule.getPw());
-        }
-        if(schedule.getUserName() != null){
+
+        if (schedule.getUserName() != null) {
             sql += "user_name = ?, ";
             params.add(schedule.getUserName());
         }
-        if(schedule.getTitle() != null){
+        if (schedule.getTitle() != null) {
             sql += "title = ?, ";
             params.add(schedule.getTitle());
         }
-        if(schedule.getContents() != null){
+        if (schedule.getContents() != null) {
             sql += "contents = ?, ";
             params.add(schedule.getContents());
         }
 
         // 시간 수정
         sql += "updated_date = now() ";
-        params.add(schedule.getUpdatedDate());
 
 
-        sql += " WHERE id = ?";
+        sql += " WHERE schedule_id = ?";
         params.add(schedule.getScheduleId());
 
 
-
-
-        jdbcTemplate.update(sql,params.toArray());
+        jdbcTemplate.update(sql, params.toArray());
 
         String selectSql = "SELECT * FROM schedule WHERE schedule_id = ?";
-        Schedule updateSchedule =  jdbcTemplate.queryForObject(selectSql, new Object [] {schedule.getScheduleId()}, new BeanPropertyRowMapper<>(Schedule.class));
+        Schedule updateSchedule = jdbcTemplate.queryForObject(selectSql, new Object[]{schedule.getScheduleId()}, new BeanPropertyRowMapper<>(Schedule.class));
 
         return updateSchedule;
     }
@@ -135,5 +124,13 @@ public class JdbcScheduleRepository implements ScheduleRepository {
         }
 
         return "일정이 삭제 되었습니다";
+    }
+
+
+    public boolean validPw(Schedule schedule){
+        String sql = "SELECT pw FROM schedule WHERE schedule_id =?";
+        String pw = jdbcTemplate.queryForObject(sql,new Object [] {schedule.getScheduleId()},String.class);
+
+        return schedule.getPw().equals(pw);
     }
 }
