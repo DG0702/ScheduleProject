@@ -38,7 +38,7 @@ public class ScheduleService {
     }
     
     // 일정 삭제
-    public String deleteSchedule(Long id){
-        return jdbcScheduleRepository.delete(id);
+    public String deleteSchedule(Long id, Schedule schedule){
+        return jdbcScheduleRepository.delete(id,schedule );
     }
 }

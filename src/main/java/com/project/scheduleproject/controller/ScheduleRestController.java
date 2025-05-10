@@ -84,8 +84,12 @@ public class ScheduleRestController {
 
     // 일정 삭제
     @DeleteMapping("/schedule/{id}")
-    public ResponseEntity<String> deleteSchedule(@PathVariable Long id){
-        String result =  scheduleService.deleteSchedule(id);
+    public ResponseEntity<String> deleteSchedule(@PathVariable Long id, @RequestBody ScheduleDTO scheduleDTO){
+        Schedule schedule = scheduleDTO.toEntity();
+
+        schedule.setScheduleId(id);
+
+        String result =  scheduleService.deleteSchedule(id, schedule);
         return ResponseEntity.ok(result);
     }
     

@@ -72,7 +72,7 @@ public class JdbcScheduleRepository implements ScheduleRepository {
     public Schedule update (Schedule schedule){
 
         if(!validPw(schedule)) {
-            throw new IllegalArgumentException("비밀번호가 틀렸습니다");
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다");
         }
 
         List<Object> params = new ArrayList<>();
@@ -112,7 +112,11 @@ public class JdbcScheduleRepository implements ScheduleRepository {
 
 
     @Override
-    public String delete (Long id){
+    public String delete (Long id, Schedule schedule){
+
+        if(!validPw(schedule)) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
 
         // DELETE 실행
         String sql = "DELETE FROM schedule WHERE schedule_id = ?";
