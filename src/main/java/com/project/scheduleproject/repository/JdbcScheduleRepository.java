@@ -104,7 +104,8 @@ public class JdbcScheduleRepository implements ScheduleRepository {
 
         jdbcTemplate.update(sql, params.toArray());
 
-        String selectSql = "SELECT * FROM schedule WHERE schedule_id = ?";
+        String selectSql = "SELECT schedule_id, member_id, user_name, title, contents, created_date, updated_date" +
+                " FROM schedule WHERE schedule_id = ?";
         Schedule updateSchedule = jdbcTemplate.queryForObject(selectSql, new Object[]{schedule.getScheduleId()}, new BeanPropertyRowMapper<>(Schedule.class));
 
         return updateSchedule;
