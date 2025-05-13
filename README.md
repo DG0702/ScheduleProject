@@ -13,6 +13,9 @@
 ### 🔁 Version Control :
 - `GitHub`
 
+### 🎗️ API 테스트 도구
+- `PostMan`
+
 <br>
 <hr>
 
@@ -32,6 +35,12 @@
 
 
 - **`JPA` 사용이 아닌 `JDBC` 사용**
+
+
+- **`Entity`에 그대로 반환하지 않고 `DTO`에 담아서 반환**
+
+
+- **`3 Layer Architecture`에 따라 각 Layer 목적에 알맞게 개발**
 
 
 ### [LV0️⃣] API 명세 및 ERD 작성
@@ -97,5 +106,65 @@
 
        - **서버에 일정 삭제을 요청할 때 `비밀번호`를 함께 전달**
 
+<br>
+<hr>
 
+## ⭐ 주요 기능
 
+📌 **`3 Layer Architecture`에 알맞게 책임 분할**
+
+📌 **`JPA`가 아닌 `JDBC`활용 -> 데이터베이스 쿼리문 활용**
+
+📌 **`CRUD` 기능을 활용**
+
+📌 **`DTO`을 활용하여 `Entity` 변환**
+
+<br>
+<hr>
+
+## 🗂️ 디렉토리 구조
+
+### 🪄 **src 디렉토리**
+
+```
+C:.
+└─src
+├─main
+│ ├─java
+│ │ └─com
+│ │ └─project
+│ │ └─scheduleproject
+│ │ ├─controller
+│ │ │ ├─MemberRestController.java
+│ │ │ └─ScheduleRestController.java
+│ │ ├─dto
+│ │ │ ├─MemberRequestDto.java
+│ │ │ ├─MemberResponseDto.java
+│ │ │ ├─ScheduleRequestDto.java
+│ │ │ └─ScheduleResponseDto.java
+│ │ ├─entity
+│ │ │ ├─Member.java
+│ │ │ └─Schedule.java
+│ │ ├─repository
+│ │ │ ├─JdbcMemberRepository.java
+│ │ │ ├─JdbcScheduleRepository.java
+│ │ │ ├─MemberRepository.java
+│ │ │ └─ScheduleRepository.java
+│ │ └─service
+│ │ ├─MemberService.java
+│ │ ├─MemberServiceImpl.java
+│ │ ├─ScheduleService.java
+│ │ └─ScheduleServiceImpl.java
+│ └─resources
+│ ├─application.properties
+│ ├─static
+│ └─templates
+└─test
+```
+
+<br>
+<hr>
+
+## 💫 트러블 슈팅
+
+- **[Velog에서 확인]()**
