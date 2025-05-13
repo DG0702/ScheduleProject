@@ -1,13 +1,17 @@
 package com.project.scheduleproject.repository;
 
+import com.project.scheduleproject.dto.ScheduleResponseDto;
 import com.project.scheduleproject.entity.Schedule;
+import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 public class JdbcScheduleRepository implements ScheduleRepository {
@@ -22,7 +26,7 @@ public class JdbcScheduleRepository implements ScheduleRepository {
 
     // 기능
     @Override
-    public Schedule save (Schedule schedule){
+    public ScheduleResponseDto save (Schedule schedule){
 
         // INSERT 실행 
         // Now() : mysql에서 현재시간을 자동으로 넣는 함수
@@ -38,39 +42,43 @@ public class JdbcScheduleRepository implements ScheduleRepository {
 
         schedule.setScheduleId(generatedId);
 
-        String selectSql = "SELECT schedule_id, member_id, user_name, title, contents, created_date, updated_date " +
-                "FROM schedule WHERE schedule_id = ?";
-
-        Schedule selecSchedule =
-                jdbcTemplate.queryForObject(selectSql,new Object[]{generatedId},new BeanPropertyRowMapper<>(Schedule.class));
-
-        return selecSchedule;
+        return new ScheduleResponseDto(schedule);
     }
 
     @Override
-    public Schedule findById (Long id){
+    public Schedule findByIdOrElseThrow (Long id){
 
         // SELECT 조회
-        String sql = "SELECT schedule_id, member_id, user_name, title, contents, created_date, updated_date " +
-                "FROM schedule WHERE schedule_id = ?";
-        Schedule schedule =
-                jdbcTemplate.queryForObject(sql,new Object[]{id},new BeanPropertyRowMapper<>(Schedule.class));
-        return  schedule;
+        String sql = "SELECT * FROM schedule WHERE schedule_id = ?";
+
+        List<Schedule> schedule =
+                jdbcTemplate.query(sql,
+                        new Object[]{id},
+                        new BeanPropertyRowMapper<>(Schedule.class));
+
+        // NULL 처리
+        return  schedule.stream()
+                .findAny()
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Does not exist"));
     }
 
     @Override
-    public List<Schedule> findAll (){
+    public List<ScheduleResponseDto> findAll (){
 
         // 모든 Schedule 조회
-        String sql = "SELECT schedule_id, member_id, user_name, title, contents, created_date, updated_date " +
-                "FROM schedule ORDER BY updated_date DESC";
-        List<Schedule> schedules = jdbcTemplate.query(sql,new BeanPropertyRowMapper<>(Schedule.class));
-        return schedules;
+        String sql = "SELECT * FROM schedule ORDER BY updated_date DESC";
+        List<Schedule> schedules =jdbcTemplate.query(sql,new BeanPropertyRowMapper<>(Schedule.class));
+
+        return schedules.stream()
+                .map(ScheduleResponseDto::new)
+                .collect(Collectors.toList());
     }
 
+    @Transactional
     @Override
-    public Schedule update (Schedule schedule){
+    public ScheduleResponseDto update (Schedule schedule){
 
+        // 비밀번호 검증
         if(!validPw(schedule)) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다");
         }
@@ -81,10 +89,6 @@ public class JdbcScheduleRepository implements ScheduleRepository {
         String sql = "UPDATE schedule SET ";
 
 
-        if (schedule.getUserName() != null) {
-            sql += "user_name = ?, ";
-            params.add(schedule.getUserName());
-        }
         if (schedule.getTitle() != null) {
             sql += "title = ?, ";
             params.add(schedule.getTitle());
@@ -104,11 +108,17 @@ public class JdbcScheduleRepository implements ScheduleRepository {
 
         jdbcTemplate.update(sql, params.toArray());
 
-        String selectSql = "SELECT schedule_id, member_id, user_name, title, contents, created_date, updated_date" +
-                " FROM schedule WHERE schedule_id = ?";
+        String selectSql = "SELECT * FROM schedule WHERE schedule_id = ?";
+
         Schedule updateSchedule = jdbcTemplate.queryForObject(selectSql, new Object[]{schedule.getScheduleId()}, new BeanPropertyRowMapper<>(Schedule.class));
 
-        return updateSchedule;
+        
+        // NULL 처리
+        if(updateSchedule == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Does not exist");
+        }
+
+        return new ScheduleResponseDto(updateSchedule);
     }
 
 

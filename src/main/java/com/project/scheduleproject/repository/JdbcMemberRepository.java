@@ -2,7 +2,6 @@ package com.project.scheduleproject.repository;
 
 import com.project.scheduleproject.dto.MemberResponseDto;
 import com.project.scheduleproject.entity.Member;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;

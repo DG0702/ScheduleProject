@@ -1,18 +1,19 @@
 package com.project.scheduleproject.repository;
 
+import com.project.scheduleproject.dto.ScheduleResponseDto;
 import com.project.scheduleproject.entity.Schedule;
 
 import java.util.List;
 
 public interface ScheduleRepository {
 
-    Schedule save(Schedule schedule);
+    ScheduleResponseDto save(Schedule schedule);
 
-    Schedule findById(Long id);
+    Schedule findByIdOrElseThrow(Long id);
 
-    List<Schedule> findAll();
+    List<ScheduleResponseDto> findAll();
 
-    Schedule update(Schedule schedule);
+    ScheduleResponseDto update(Schedule schedule);
 
     String delete(Long id, Schedule schedule);
 

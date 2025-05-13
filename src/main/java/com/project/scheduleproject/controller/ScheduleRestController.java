@@ -1,17 +1,17 @@
 package com.project.scheduleproject.controller;
 
 
-import com.project.scheduleproject.dto.ScheduleDTO;
+import com.project.scheduleproject.dto.ScheduleRequestDto;
+import com.project.scheduleproject.dto.ScheduleResponseDto;
 import com.project.scheduleproject.entity.Schedule;
 import com.project.scheduleproject.service.ScheduleService;
+import com.project.scheduleproject.service.ScheduleServiceImpl;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
@@ -27,72 +27,34 @@ public class ScheduleRestController {
 
     // 일정 생성
     @PostMapping("/schedule")
-    public ResponseEntity<Schedule> createSchedule(@RequestBody ScheduleDTO scheduleDTO){
-
-        Schedule schedule = scheduleDTO.toEntity();
-
-        Schedule savedSchedule = scheduleService.createSchedule(schedule);
-
-        return ResponseEntity.ok(savedSchedule);
+    public ResponseEntity<ScheduleResponseDto> createSchedule(@RequestBody ScheduleRequestDto dto){
+        return ResponseEntity.status(HttpStatus.CREATED).body(scheduleService.createSchedule(dto));
     }
 
     // 일정 조회
     @GetMapping("/schedule/{id}")
-    public ResponseEntity<ScheduleDTO> selectSchedule(@PathVariable Long id){
-        Schedule schedule = scheduleService.selectSchedule(id);
-
-        ScheduleDTO scheduleDTO = new ScheduleDTO(schedule);
-
-        return ResponseEntity.ok(scheduleDTO);
+    public ResponseEntity<ScheduleResponseDto> selectSchedule(@PathVariable Long id){
+        return ResponseEntity.status(HttpStatus.OK).body(scheduleService.selectSchedule(id));
     }
 
     // 모든 일정 조회
     @GetMapping("/schedule")
-    public ResponseEntity<List<ScheduleDTO>> selectAllSchedules(){
-        List<Schedule> schedules = scheduleService.selectAllSchedule();
-
-//        List<ScheduleDTO> scheduleDTOList = schedules.stream()
-//                .map(schedule -> new ScheduleDTO(schedule))
-//                .map(ScheduleDTO::new)
-//                .collect(Collectors.toList());
-
-
-
-        List<ScheduleDTO> scheduleDTOList = new ArrayList<>();
-
-        for (Schedule schedule : schedules) {
-            ScheduleDTO scheduleDTO = new ScheduleDTO(schedule);
-            scheduleDTOList.add(scheduleDTO);
-        }
-
-        return ResponseEntity.ok(scheduleDTOList);
+    public ResponseEntity<List<ScheduleResponseDto>> selectAllSchedules(){
+        return ResponseEntity.status(HttpStatus.OK).body(scheduleService.selectAllSchedule());
     }
-    
+
     // 일정 수정
     @PatchMapping("/schedule/{id}")
-    public ResponseEntity<ScheduleDTO> updateSchedule(@PathVariable Long id, @RequestBody ScheduleDTO scheduleDTO){
-        Schedule schedule = scheduleDTO.toEntity();
-
-        schedule.setScheduleId(id);
-
-        Schedule updatedSchedule = scheduleService.updateSchedule(schedule);
-
-        ScheduleDTO scheduleDTo = new ScheduleDTO(updatedSchedule);
-
-        return ResponseEntity.ok(scheduleDTo);
+    public ResponseEntity<ScheduleResponseDto> updateSchedule(@PathVariable Long id, @RequestBody ScheduleRequestDto dto){
+        return ResponseEntity.status(HttpStatus.OK).body(scheduleService.updateSchedule(id,dto));
     }
 
     // 일정 삭제
     @DeleteMapping("/schedule/{id}")
-    public ResponseEntity<String> deleteSchedule(@PathVariable Long id, @RequestBody ScheduleDTO scheduleDTO){
-        Schedule schedule = scheduleDTO.toEntity();
-
-        schedule.setScheduleId(id);
-
-        String result =  scheduleService.deleteSchedule(id, schedule);
-        return ResponseEntity.ok(result);
+    public ResponseEntity<String> deleteSchedule(@PathVariable Long id, @RequestBody ScheduleRequestDto dto){
+        return ResponseEntity.status(HttpStatus.OK).body(scheduleService.deleteSchedule(id,dto));
     }
-    
-    
+
+
 
 }

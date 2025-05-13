@@ -9,7 +9,6 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 
 @Getter
@@ -17,9 +16,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class ScheduleDTO {
+public class ScheduleRequestDto {
 
-    private Long scheduleId;
     private Long memberId;
     private String pw;
     private String userName;
@@ -29,16 +27,15 @@ public class ScheduleDTO {
     private String updatedDate ;
 
 
-    public ScheduleDTO(Schedule schedule){
+    public ScheduleRequestDto(Schedule schedule){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        this.scheduleId = schedule.getScheduleId();
         this.memberId = schedule.getMemberId();
         this.pw = schedule.getPw();
         this.userName = schedule.getUserName();
         this.title = schedule.getTitle();
         this.contents = schedule.getContents();
 
-        // String 타입으로 변경 (yyyy-MM-dd)
+        // LocalDateTime -> String 타입으로 변경 (yyyy-MM-dd)
         this.createdDate = schedule.getCreatedDate().format(formatter);
         this.updatedDate = schedule.getUpdatedDate().format(formatter);
     }
@@ -46,18 +43,16 @@ public class ScheduleDTO {
 
 
     public Schedule toEntity(){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime createdDateTime;
         LocalDateTime updatedDateTime;
 
-        // LocalDateTime 타입으로 변경 (yyyy-MM-dd : hh-MM-ss)
+        // String -> LocalDateTime 타입으로 변경 (yyyy-MM-dd : hh-MM-ss)
         if(this.createdDate ==null){
             createdDateTime = LocalDateTime.now();
         }else{
             createdDateTime = LocalDateTime.parse(this.createdDate,formatter);
         }
-
-
 
         if(this.updatedDate == null){
             updatedDateTime = LocalDateTime.now();
@@ -66,8 +61,7 @@ public class ScheduleDTO {
         }
 
 
-
-        return new Schedule(scheduleId,memberId,pw,userName,title,contents,createdDateTime,updatedDateTime);
+        return new Schedule(memberId,pw,userName,title,contents,createdDateTime,updatedDateTime);
     }
 
 
