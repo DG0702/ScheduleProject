@@ -1,18 +1,19 @@
 package com.project.scheduleproject.repository;
 
+import com.project.scheduleproject.dto.MemberResponseDto;
 import com.project.scheduleproject.entity.Member;
 
 import java.util.List;
 
 public interface MemberRepository {
 
-    Member save(Member member);
+    MemberResponseDto addMember(Member member);
 
-    Member findById(Long id);
+    Member findByIdOrElseThrow(Long id);
 
-    List<Member> findAll();
+    List<MemberResponseDto> findAll();
 
-    Member update(Member member);
+    MemberResponseDto update(Member member);
 
     String delete(Long id);
 

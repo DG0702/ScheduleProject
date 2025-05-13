@@ -11,9 +11,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class MemberDTO {
+public class MemberRequestDto {
 
-    private Long id;
     private String userName;
     private String userId;
     private String userPw;
@@ -21,6 +20,6 @@ public class MemberDTO {
     private String userPhoneNumber;
 
     public Member toEntity(){
-        return new Member(id,userName,userId,userPw,userEmail,userPhoneNumber);
+        return new Member(userName,userId,userPw,userEmail,userPhoneNumber);
     }
 }

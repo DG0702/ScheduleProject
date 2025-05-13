@@ -1,9 +1,14 @@
 package com.project.scheduleproject.repository;
 
+import com.project.scheduleproject.dto.MemberResponseDto;
 import com.project.scheduleproject.entity.Member;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +26,7 @@ public class JdbcMemberRepository implements MemberRepository{
 
     // 기능
     @Override
-    public Member save(Member member){
+    public MemberResponseDto addMember(Member member){
 
         // INSERT 쿼리 실행
         String sql = "INSERT INTO member (user_name, user_id, user_pw, user_email, user_phone_number) VALUES (?, ?, ?, ?, ?)";
@@ -33,41 +38,36 @@ public class JdbcMemberRepository implements MemberRepository{
 
         member.setId(generatedId);
 
-        return member;
+        return new MemberResponseDto(member);
     }
 
     @Override
-    public Member findById(Long id){
+    public Member findByIdOrElseThrow(Long id){
 
         // SELECT 조회
         String sql = "SELECT * FROM MEMBER WHERE id = ?";
-        Member member =
-                jdbcTemplate.queryForObject (sql, new Object[]{id}, new BeanPropertyRowMapper<>(Member.class)
+        List<Member> member =
+                jdbcTemplate.query (sql,
+                        new Object[]{id},
+                        new BeanPropertyRowMapper<>(Member.class));
 
-
-//                        (rs,rowNum)-> new Member(
-//                        rs.getLong("id"),
-//                        rs.getString("user_name"),
-//                        rs.getString("user_id"),
-//                        rs.getString("user_pw"),
-//                        rs.getString("user_email"),
-//                        rs.getString("user_phone_number"))
-                );
-
-        return member;
+        // NULL 처리
+        return member.stream()
+                .findAny()
+                .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"Does not exist"));
     }
 
     @Override
-    public List<Member> findAll(){
+    public List<MemberResponseDto> findAll(){
 
         // 모든 Member 조회
         String sql = "SELECT * FROM MEMBER";
-        List<Member> members = jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Member.class));
-        return members;
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(MemberResponseDto.class));
     }
 
+    @Transactional
     @Override
-    public Member update(Member member){
+    public MemberResponseDto update(Member member){
 
         List<Object> params = new ArrayList<>();
 
@@ -108,14 +108,18 @@ public class JdbcMemberRepository implements MemberRepository{
         String selectSql = "SELECT * FROM member WHERE id = ?";
         Member updatedMember = jdbcTemplate.queryForObject(selectSql, new Object[]{member.getId()} ,new BeanPropertyRowMapper<>(Member.class));
 
-        return updatedMember;
+        if(updatedMember == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Does not exist");
+        }
+
+        return new MemberResponseDto(updatedMember);
     }
 
     @Override
     public String delete(Long id){
         // DELETE 실행
         String sql = "DELETE FROM MEMBER WHERE id = ?";
-        
+
         // 삭제된 행의 수
         int removeRow = jdbcTemplate.update(sql, id);
 

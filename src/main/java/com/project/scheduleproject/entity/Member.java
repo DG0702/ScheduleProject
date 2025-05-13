@@ -19,4 +19,12 @@ public class Member {
     private String userPw;
     private String userEmail;
     private String userPhoneNumber;
+
+    public Member(String userName, String userId, String userPw, String userEmail, String userPhoneNumber) {
+        this.userName = userName;
+        this.userId = userId;
+        this.userPw = userPw;
+        this.userEmail = userEmail;
+        this.userPhoneNumber = userPhoneNumber;
+    }
 }
