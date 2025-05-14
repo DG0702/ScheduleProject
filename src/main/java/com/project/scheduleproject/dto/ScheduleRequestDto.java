@@ -5,10 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+
 
 
 @Getter
@@ -23,41 +21,29 @@ public class ScheduleRequestDto {
     private String userName;
     private String title;
     private String contents;
-    private String createdDate ;
-    private String updatedDate ;
-
-
-    public ScheduleRequestDto(Schedule schedule){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        this.memberId = schedule.getMemberId();
-        this.pw = schedule.getPw();
-        this.userName = schedule.getUserName();
-        this.title = schedule.getTitle();
-        this.contents = schedule.getContents();
-
-        // LocalDateTime -> String 타입으로 변경 (yyyy-MM-dd)
-        this.createdDate = schedule.getCreatedDate().format(formatter);
-        this.updatedDate = schedule.getUpdatedDate().format(formatter);
-    }
-
-
+    private LocalDateTime createdDate ;
+    private LocalDateTime updatedDate ;
+    
+    
 
     public Schedule toEntity(){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime createdDateTime;
         LocalDateTime updatedDateTime;
 
-        // String -> LocalDateTime 타입으로 변경 (yyyy-MM-dd : hh-MM-ss)
+        // 생성일이 null 일 경우
         if(this.createdDate ==null){
             createdDateTime = LocalDateTime.now();
-        }else{
-            createdDateTime = LocalDateTime.parse(this.createdDate,formatter);
+        }
+        else{
+            createdDateTime = this.createdDate;
         }
 
+        // 수정일이 null 일 경우
         if(this.updatedDate == null){
             updatedDateTime = LocalDateTime.now();
-        }else{
-            updatedDateTime = LocalDateTime.parse(this.updatedDate,formatter);
+        }
+        else{
+            updatedDateTime = this.updatedDate;
         }
 
 
