@@ -3,14 +3,11 @@ package com.project.scheduleproject.controller;
 
 import com.project.scheduleproject.dto.ScheduleRequestDto;
 import com.project.scheduleproject.dto.ScheduleResponseDto;
-import com.project.scheduleproject.entity.Schedule;
 import com.project.scheduleproject.service.ScheduleService;
-import com.project.scheduleproject.service.ScheduleServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController

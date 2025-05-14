@@ -4,8 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-
 import java.time.LocalDateTime;
 
 @Setter
@@ -29,8 +27,8 @@ public class Schedule {
         this.userName = userName;
         this.title = title;
         this.contents = contents;
-        this.createdDate = LocalDateTime.now();
-        this.updatedDate = LocalDateTime.now();
+        this.createdDate = createdDateTime;
+        this.updatedDate = updatedDateTime;
     }
 }
 

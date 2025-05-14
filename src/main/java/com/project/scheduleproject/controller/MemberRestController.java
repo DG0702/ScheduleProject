@@ -2,9 +2,7 @@ package com.project.scheduleproject.controller;
 
 import com.project.scheduleproject.dto.MemberRequestDto;
 import com.project.scheduleproject.dto.MemberResponseDto;
-import com.project.scheduleproject.entity.Member;
 import com.project.scheduleproject.service.MemberService;
-import com.project.scheduleproject.service.MemberServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
