@@ -89,9 +89,9 @@ public class JdbcScheduleRepository implements ScheduleRepository {
         String sql = "UPDATE schedule SET ";
 
 
-        if (schedule.getTitle() != null) {
-            sql += "title = ?, ";
-            params.add(schedule.getTitle());
+        if (schedule.getUserName() != null) {
+            sql += "user_name = ?, ";
+            params.add(schedule.getUserName());
         }
         if (schedule.getContents() != null) {
             sql += "contents = ?, ";
