@@ -9,6 +9,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -63,11 +65,30 @@ public class JdbcScheduleRepository implements ScheduleRepository {
     }
 
     @Override
-    public List<ScheduleResponseDto> findAll (){
+    public List<ScheduleResponseDto> findAll (String userName, LocalDate updatedDate){
+
+        // ? 값
+        List<Object> params = new ArrayList<>();
 
         // 모든 Schedule 조회
-        String sql = "SELECT * FROM schedule ORDER BY updated_date DESC";
-        List<Schedule> schedules =jdbcTemplate.query(sql,new BeanPropertyRowMapper<>(Schedule.class));
+        String sql = "SELECT * FROM schedule where 1=1 ";
+
+        if(userName != null &&!userName.isEmpty()){
+            sql += "and user_name = ?";
+            params.add(userName);
+        }
+
+        if(updatedDate != null){
+            sql += "and updated_date >= ? and updated_date < ?";
+            LocalDateTime startTime = updatedDate.atStartOfDay();
+            LocalDateTime endTime = updatedDate.plusDays(1).atStartOfDay();
+            params.add(startTime);
+            params.add(endTime);
+        }
+
+        sql += " ORDER BY schedule_id DESC";
+
+        List<Schedule> schedules =jdbcTemplate.query(sql,new BeanPropertyRowMapper<>(Schedule.class),params.toArray());
 
         return schedules.stream()
                 .map(ScheduleResponseDto::new)

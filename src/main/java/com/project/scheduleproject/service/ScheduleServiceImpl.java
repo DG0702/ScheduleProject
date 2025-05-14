@@ -6,6 +6,7 @@ import com.project.scheduleproject.entity.Schedule;
 import com.project.scheduleproject.repository.ScheduleRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -35,8 +36,8 @@ public class ScheduleServiceImpl implements ScheduleService {
     
     // 일정 모두 조회
     @Override
-    public List<ScheduleResponseDto> selectAllSchedule(){
-        return scheduleRepository.findAll();
+    public List<ScheduleResponseDto> selectAllSchedule(String userName, LocalDate updatedDate){
+        return scheduleRepository.findAll(userName,updatedDate);
     }
     
     // 일정 수정

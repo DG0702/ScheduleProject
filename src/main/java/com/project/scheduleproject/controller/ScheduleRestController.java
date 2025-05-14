@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -36,8 +38,9 @@ public class ScheduleRestController {
 
     // 모든 일정 조회
     @GetMapping("/schedule")
-    public ResponseEntity<List<ScheduleResponseDto>> selectAllSchedules(){
-        return ResponseEntity.status(HttpStatus.OK).body(scheduleService.selectAllSchedule());
+    public ResponseEntity<List<ScheduleResponseDto>> selectAllSchedules(@RequestParam (required = false) String userName,
+                                                                        @RequestParam(required = false) LocalDate updatedDate){
+        return ResponseEntity.status(HttpStatus.OK).body(scheduleService.selectAllSchedule(userName, updatedDate));
     }
 
     // 일정 수정
