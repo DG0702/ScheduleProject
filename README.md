@@ -167,4 +167,4 @@ C:.
 
 ## 💫 트러블 슈팅
 
-- **[Velog에서 확인]()**
+- **[Velog에서 확인](https://velog.io/@dkzh506/Springboot-%EC%9D%BC%EC%A0%95-%EA%B4%80%EB%A6%AC-%EC%95%B1)**
