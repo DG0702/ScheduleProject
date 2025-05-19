@@ -1,5 +1,6 @@
 create database sd;
 show databases;
+use sd;
 
 create table member (
                         id bigint auto_increment primary key not null,
