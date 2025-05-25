@@ -37,9 +37,8 @@ public class ScheduleRestController {
 
     // 모든 일정 조회
     @GetMapping("/schedule")
-    public ResponseEntity<List<ScheduleResponseDto>> selectAllSchedules(@RequestParam (required = false) String userName,
-                                                                        @RequestParam(required = false) LocalDate updatedDate){
-        return ResponseEntity.status(HttpStatus.OK).body(scheduleService.selectAllSchedule(userName, updatedDate));
+    public ResponseEntity<List<ScheduleResponseDto>> selectAllSchedules(@RequestParam(required = false) LocalDate updatedDate){
+        return ResponseEntity.status(HttpStatus.OK).body(scheduleService.selectAllSchedule(updatedDate));
     }
 
     // 일정 수정

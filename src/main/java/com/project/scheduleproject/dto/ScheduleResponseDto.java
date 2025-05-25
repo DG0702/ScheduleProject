@@ -15,7 +15,6 @@ import java.time.format.DateTimeFormatter;
 public class ScheduleResponseDto {
     private Long scheduleId;
     private Long memberId;
-    private String userName;
     private String title;
     private String contents;
     private String createdDate ;
@@ -27,7 +26,6 @@ public class ScheduleResponseDto {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         this.scheduleId = schedule.getScheduleId();
         this.memberId = schedule.getMemberId();
-        this.userName = schedule.getUserName();
         this.title = schedule.getTitle();
         this.contents = schedule.getContents();
         

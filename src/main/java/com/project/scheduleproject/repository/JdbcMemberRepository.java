@@ -28,8 +28,8 @@ public class JdbcMemberRepository implements MemberRepository{
     public MemberResponseDto addMember(Member member){
 
         // INSERT 쿼리 실행
-        String sql = "INSERT INTO member (user_name, user_id, user_pw, user_email, user_phone_number) VALUES (?, ?, ?, ?, ?)";
-        jdbcTemplate.update(sql, member.getUserName(), member.getUserId(), member.getUserPw(), member.getUserEmail(), member.getUserPhoneNumber());
+        String sql = "INSERT INTO member (user_name, user_id, user_pw, user_email, user_phone_number) VALUES (?, ?, ?, ?)";
+        jdbcTemplate.update(sql, member.getUserName(), member.getUserPw(), member.getUserEmail(), member.getUserPhoneNumber());
 
         // 마지막으로 삽인된 ID 가져오기
         String sqlId = "SELECT LAST_INSERT_ID()";
@@ -76,10 +76,6 @@ public class JdbcMemberRepository implements MemberRepository{
         if(member.getUserName()!= null){
             sql += "user_name = ?, ";
             params.add(member.getUserName());
-        }
-        if(member.getUserId() != null){
-            sql += "user_id = ?, ";
-            params.add(member.getUserId());
         }
         if(member.getUserPw()!= null){
             sql += "user_pw = ?, ";

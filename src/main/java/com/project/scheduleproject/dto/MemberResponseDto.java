@@ -14,7 +14,6 @@ import lombok.Setter;
 public class MemberResponseDto {
     private Long id;
     private String userName;
-    private String userId;
     private String userPw;
     private String userEmail;
     private String userPhoneNumber;
@@ -22,7 +21,6 @@ public class MemberResponseDto {
     public MemberResponseDto(Member member) {
         this.id = member.getId();
         this.userName = member.getUserName();
-        this.userId = member.getUserId();
         this.userPw = member.getUserPw();
         this.userEmail = member.getUserEmail();
         this.userPhoneNumber = member.getUserPhoneNumber();

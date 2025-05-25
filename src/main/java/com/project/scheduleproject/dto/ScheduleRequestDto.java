@@ -17,7 +17,6 @@ public class ScheduleRequestDto {
 
     private Long memberId;
     private String pw;
-    private String userName;
     private String title;
     private String contents;
     private LocalDateTime createdDate ;
@@ -46,7 +45,7 @@ public class ScheduleRequestDto {
         }
 
 
-        return new Schedule(memberId,pw,userName,title,contents,createdDateTime,updatedDateTime);
+        return new Schedule(memberId,pw,title,contents,createdDateTime,updatedDateTime);
     }
 
 

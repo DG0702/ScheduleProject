@@ -33,10 +33,10 @@ public class JdbcScheduleRepository implements ScheduleRepository {
         // INSERT 실행 
         // Now() : mysql에서 현재시간을 자동으로 넣는 함수
         String sql = "INSERT INTO schedule " +
-                "(member_id, pw, user_name, title, contents,created_date, updated_date) " +
-                "VALUES (?,?,?,?,?,Now(),Now())";
+                "(member_id, pw ,title, contents,created_date, updated_date) " +
+                "VALUES (?,?,?,?,Now(),Now())";
 
-        jdbcTemplate.update(sql,schedule.getMemberId(), schedule.getPw(),schedule.getUserName(),schedule.getTitle(),schedule.getContents());
+        jdbcTemplate.update(sql,schedule.getMemberId(), schedule.getPw(),schedule.getTitle(),schedule.getContents());
 
 
         String sqlId = "SELECT LAST_INSERT_ID()";
@@ -65,18 +65,13 @@ public class JdbcScheduleRepository implements ScheduleRepository {
     }
 
     @Override
-    public List<ScheduleResponseDto> findAll (String userName, LocalDate updatedDate){
+    public List<ScheduleResponseDto> findAll ( LocalDate updatedDate){
 
         // ? 값
         List<Object> params = new ArrayList<>();
 
         // 모든 Schedule 조회
         String sql = "SELECT * FROM schedule where 1=1 ";
-
-        if(userName != null &&!userName.isEmpty()){
-            sql += "and user_name = ?";
-            params.add(userName);
-        }
 
         if(updatedDate != null){
             sql += "and updated_date >= ? and updated_date < ?";
@@ -110,10 +105,6 @@ public class JdbcScheduleRepository implements ScheduleRepository {
         String sql = "UPDATE schedule SET ";
 
 
-        if (schedule.getUserName() != null) {
-            sql += "user_name = ?, ";
-            params.add(schedule.getUserName());
-        }
         if (schedule.getContents() != null) {
             sql += "contents = ?, ";
             params.add(schedule.getContents());

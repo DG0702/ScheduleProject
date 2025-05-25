@@ -14,12 +14,11 @@ import lombok.Setter;
 public class MemberRequestDto {
 
     private String userName;
-    private String userId;
     private String userPw;
     private String userEmail;
     private String userPhoneNumber;
 
     public Member toEntity(){
-        return new Member(userName,userId,userPw,userEmail,userPhoneNumber);
+        return new Member(userName,userPw,userEmail,userPhoneNumber);
     }
 }

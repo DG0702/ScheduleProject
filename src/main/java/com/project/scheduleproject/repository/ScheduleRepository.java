@@ -12,7 +12,7 @@ public interface ScheduleRepository {
 
     Schedule findByIdOrElseThrow(Long id);
 
-    List<ScheduleResponseDto> findAll(String userName, LocalDate updatedDate);
+    List<ScheduleResponseDto> findAll(LocalDate updatedDate);
 
     ScheduleResponseDto update(Schedule schedule);
 

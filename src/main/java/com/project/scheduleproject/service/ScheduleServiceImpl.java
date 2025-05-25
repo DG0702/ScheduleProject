@@ -36,8 +36,8 @@ public class ScheduleServiceImpl implements ScheduleService {
     
     // 일정 모두 조회
     @Override
-    public List<ScheduleResponseDto> selectAllSchedule(String userName, LocalDate updatedDate){
-        return scheduleRepository.findAll(userName,updatedDate);
+    public List<ScheduleResponseDto> selectAllSchedule( LocalDate updatedDate){
+        return scheduleRepository.findAll(updatedDate);
     }
     
     // 일정 수정
