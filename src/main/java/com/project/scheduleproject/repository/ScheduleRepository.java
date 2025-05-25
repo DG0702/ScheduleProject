@@ -16,7 +16,7 @@ public interface ScheduleRepository {
 
     ScheduleResponseDto update(Schedule schedule);
 
-    String delete(Long id, Schedule schedule);
+    String delete(Long id, String password);
 
 }
 

@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -51,8 +50,9 @@ public class ScheduleRestController {
 
     // 일정 삭제
     @DeleteMapping("/schedule/{id}")
-    public ResponseEntity<String> deleteSchedule(@PathVariable Long id, @RequestBody ScheduleRequestDto dto){
-        return ResponseEntity.status(HttpStatus.OK).body(scheduleService.deleteSchedule(id,dto));
+    public ResponseEntity<String> deleteSchedule(@PathVariable Long id,
+                                                 @RequestParam String password){
+        return ResponseEntity.status(HttpStatus.OK).body(scheduleService.deleteSchedule(id,password));
     }
 
 

@@ -144,9 +144,9 @@ public class JdbcScheduleRepository implements ScheduleRepository {
 
 
     @Override
-    public String delete (Long id, Schedule schedule){
+    public String delete (Long id, String password){
 
-        if(!validPw(schedule)) {
+        if(!pw(id,password)) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
 
@@ -168,5 +168,12 @@ public class JdbcScheduleRepository implements ScheduleRepository {
         String pw = jdbcTemplate.queryForObject(sql,new Object [] {schedule.getScheduleId()},String.class);
 
         return schedule.getPw().equals(pw);
+    }
+
+    public boolean pw (Long id,String password){
+        String sql = "SELECT pw FROM schedule WHERE schedule_id =?";
+        String pw = jdbcTemplate.queryForObject(sql,new Object [] {id},String.class);
+
+        return password.equals(pw);
     }
 }

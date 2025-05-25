@@ -52,11 +52,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     
     // 일정 삭제
     @Override
-    public String deleteSchedule(Long id, ScheduleRequestDto dto){
-        Schedule schedule = dto.toEntity();
-
-        schedule.setScheduleId(id);
-
-        return scheduleRepository.delete(id,schedule);
+    public String deleteSchedule(Long id, String password){
+        return scheduleRepository.delete(id,password);
     }
 }
